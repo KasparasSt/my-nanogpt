@@ -1,4 +1,4 @@
-# runnning nanoGPT locally task
+# Runnning nanoGPT locally task
 **Author:** Kasparas
 **Hardware:** NVIDIA GeForce GTX 1650 (4GB VRAM)
 
@@ -12,7 +12,7 @@ Milestone | Iteration | Val Loss ($L$) | Perplexity ($e^L$) | Observations |
 | **Best** | 1750 | **1.464** | **4.323** | Optimal level |
 | **Slight Overfit** | 2000 | 1.478 | **4.384** | Starting to memorize training data|
 
-**Summary:** Perplexity is an important metric for LLMs that measures model confidence and accuracy. The beast perplexity of **4.323** was reached, indicated that the model's confusion level represents an uniform choice between average of **4.323** characters, which is a noticeable improvement from the initial random guessing (**71.215**)
+**Summary:** Perplexity is an important metric for LLMs that measures model confidence and accuracy. The best perplexity of **4.323** was reached, indicating that the model's confusion level represents a uniform choice between the average of **4.323** characters, which is a noticeable improvement from the initial random guessing (**71.215**)
 
 ### 📈 Training Visualizations
 ![Loss and Perplexity Subplots](assets/training_plots.png)
