@@ -18,6 +18,44 @@ Milestone | Iteration | Val Loss ($L$) | Perplexity ($e^L$) | Observations |
 ![Loss and Perplexity Subplots](assets/training_plots.png)
 
 
+
+### Some prompts and outputs (100 characters)
+
+**Prompt:** 
+
+`To be or not to be`
+
+**Output:** 
+```text
+To be or not to be so for Romeo's daughter;
+And made him of our tale rude the gate
+Of all this usurping trage: has a f
+```
+
+**Prompt:**
+
+`Kasparas shouted`
+
+**Output:**
+```text
+Kasparas shouted with him
+That will be ready to his habitable:
+What then? do you hear? have I would tell him?
+DUKE
+```
+
+**Prompt:**
+
+`KING: Hello`
+
+**Output:**
+```text
+KING: Hellow, madam, king with the sweet man that way
+Have made a man all and barr'd him with his back:
+And all
+```
+It's generating something:)
+
 ---
 # Original nanoGPT documentation
 
