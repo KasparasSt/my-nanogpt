@@ -118,8 +118,11 @@ def get_batch(split):
     # https://stackoverflow.com/questions/45132940/numpy-memmap-memory-usage-want-to-iterate-once/61472122#61472122
     if split == 'train':
         data = np.memmap(os.path.join(data_dir, 'train.bin'), dtype=np.uint16, mode='r')
-    else:
+    elif split == 'val':
         data = np.memmap(os.path.join(data_dir, 'val.bin'), dtype=np.uint16, mode='r')
+    else:
+        data = np.memmap(os.path.join(data_dir, 'test.bin'), dtype=np.uint16, mode='r')
+        
     ix = torch.randint(len(data) - block_size, (batch_size,))
     x = torch.stack([torch.from_numpy((data[i:i+block_size]).astype(np.int64)) for i in ix])
     y = torch.stack([torch.from_numpy((data[i+1:i+1+block_size]).astype(np.int64)) for i in ix])
@@ -216,7 +219,7 @@ if ddp:
 def estimate_loss():
     out = {}
     model.eval()
-    for split in ['train', 'val']:
+    for split in ['train', 'val','test']:
         losses = torch.zeros(eval_iters)
         for k in range(eval_iters):
             X, Y = get_batch(split)
@@ -262,7 +265,7 @@ while True:
     # evaluate the loss on train/val sets and write checkpoints
     if iter_num % eval_interval == 0 and master_process:
         losses = estimate_loss()
-        print(f"step {iter_num}: train loss {losses['train']:.4f}, val loss {losses['val']:.4f}")
+        print(f"step {iter_num}: train loss {losses['train']:.4f}, val loss {losses['val']:.4f}, train PPL: {math.exp(losses['train']):.4f}, val PPL: {math.exp(losses['val']):.4f}")
         if wandb_log:
             wandb.log({
                 "iter": iter_num,
@@ -334,3 +337,14 @@ while True:
 
 if ddp:
     destroy_process_group()
+
+
+# --- FINAL TEST ---
+print("\n" + "="*30)
+print("TRAINING COMPLETE - RUNNING FINAL TEST")
+final_metrics = estimate_loss()
+test_ppl = math.exp(final_metrics['test'])
+
+print(f"Final Test Loss: {final_metrics['test']:.4f}")
+print(f"Final Test Perplexity: {test_ppl:.4f}")
+print("="*30)

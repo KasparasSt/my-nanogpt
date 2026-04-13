@@ -2,7 +2,7 @@
 **Author:** Kasparas
 **Hardware:** NVIDIA GeForce GTX 1650 (4GB VRAM)
 
-## Training results on Shakespeare Character Model
+
 
 ### Model Architecture
 The "Baby GPT" configuration:
@@ -33,6 +33,10 @@ Settings for the optimizer and LR scheduling.
 
 Training took approximately one hour.
 
+## Training results on Shakespeare Character Model
+
+### Perplexity calculations (manual)
+
 Milestone | Iteration | Val Loss ($L$) | Perplexity ($e^L$) | Observations |
 | :--- | :--- | :--- | :--- | :--- |
 | **Initial** | 0 | 4.266 (train) | **71.215** | Random guessing |
@@ -42,6 +46,23 @@ Milestone | Iteration | Val Loss ($L$) | Perplexity ($e^L$) | Observations |
 
 **Summary:** Perplexity is an important metric for LLMs that measures model confidence and accuracy. The best perplexity of **4.323** was reached, indicating that the model's confusion level represents a uniform choice between the average of **4.323** characters, which is a noticeable improvement from the initial random guessing (**71.215**)
 
+### Perplexity calculations (code)
+
+Implemented perplexity calculations on each evaluation step for **train** and **validation** data. Aditionally, 10% **test** data was split from all data. It is used to evaluate test loss and perplexity after the training is finished. The changes are made in train.py.
+
+To ensure that this evaluation works, training with 500 iterations and evaluation every 100 steps was conducted.
+
+Resulting outputs can be found below:
+```text
+step 100: train loss 2.4413, val loss 2.4970, train PPL: 11.4880, val PPL: 12.1455
+step 200: train loss 2.1630, val loss 2.2400, train PPL: 8.6975, val PPL: 9.3933
+step 300: train loss 1.8488, val loss 1.9602, train PPL: 6.3523, val PPL: 7.1008
+step 400: train loss 1.6707, val loss 1.7895, train PPL: 5.3161, val PPL: 5.9866
+step 500: train loss 1.6055, val loss 1.7350, train PPL: 4.9804, val PPL: 5.6687
+
+Final Test Loss: 1.9199
+Final Test Perplexity: 6.8200
+```
 ### 📈 Training Visualizations
 ![Loss and Perplexity Subplots](assets/training_plots.png)
 
