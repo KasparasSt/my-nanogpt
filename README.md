@@ -63,6 +63,23 @@ step 500: train loss 1.6055, val loss 1.7350, train PPL: 4.9804, val PPL: 5.6687
 Final Test Loss: 1.9199
 Final Test Perplexity: 6.8200
 ```
+
+### Perplexity calculations (calculate_PPL.py)
+
+Added calculate_PPL.py that evaluates test loss and perplexity using a model checkpoint. Previous 2000 iteration model was evaluated, output below:
+
+```text
+========================================
+Dataset: shakespeare_char
+Split: test
+Eval iters: 200
+Batch size: 64
+Block size: 256
+Test Loss: 1.4644
+Test Perplexity: 4.3248
+========================================
+```
+
 ### 📈 Training Visualizations
 ![Loss and Perplexity Subplots](assets/training_plots.png)
 
