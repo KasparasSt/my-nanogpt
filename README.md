@@ -3,7 +3,35 @@
 **Hardware:** NVIDIA GeForce GTX 1650 (4GB VRAM)
 
 ## Training results on Shakespeare Character Model
-Ran the baseline training with 2000 iterations, training took around one hour.
+
+### Model Architecture
+The "Baby GPT" configuration:
+
+| Parameter | Value | Description |
+| :--- | :--- | :--- |
+| **Number of Layers** ($n_{layer}$) | 6 | Number of transformer blocks |
+| **Number of Heads** ($n_{head}$) | 6 | Parallel attention pathways |
+| **Embedding Dimension** ($n_{embd}$) | 384 | The size of the vector representing each character |
+**Block Size** | 256 | Contex size of previous characters |
+| **Dropout** | 0.2 | Regularization technique that randomly deactivates neurons |
+
+---
+
+### Training Hyperparameters
+Settings for the optimizer and LR scheduling.
+
+| Hyperparameter | Value | Description |
+| :--- | :--- | :--- |
+| **Max Iterations** | 2000 | Number of training steps |
+| **Dataset** | `shakespeare_char` |Character-level dataset |
+| **Batch Size**  | 64 | Sequences processed in parallel per step|
+| **Peak Learning Rate** | $1 \times 10^{-3}$ | Initial learning speed (GD scalling coeff.) |
+| **Min Learning Rate** | $1 \times 10^{-4}$ | Learning rate after decay |
+| **Warmup Iterations** | 100 | Steps to linearly ramp up the LR |
+| **LR Decay Steps** | 2000 | Steps over which LR is decayed |
+| **Adam $\beta_2$** | 0.99 | Momentum for squared gradients |
+
+Training took approximately one hour.
 
 Milestone | Iteration | Val Loss ($L$) | Perplexity ($e^L$) | Observations |
 | :--- | :--- | :--- | :--- | :--- |
@@ -55,6 +83,9 @@ Have made a man all and barr'd him with his back:
 And all
 ```
 It's generating something:)
+
+
+
 
 ---
 # Original nanoGPT documentation
