@@ -66,8 +66,7 @@ Final Test Perplexity: 6.8200
 
 ### Perplexity calculations (calculate_PPL.py)
 
-Added calculate_PPL.py that evaluates test loss and perplexity using a model checkpoint. Previous 2000 iteration model was evaluated, output below:
-
+Added calculate_PPL.py that evaluates test loss and perplexity using a model checkpoint. Previous 2000 iteration model was evaluated, output below. 
 ```text
 ========================================
 Dataset: shakespeare_char
@@ -79,6 +78,8 @@ Test Loss: 1.4644
 Test Perplexity: 4.3248
 ========================================
 ```
+*Note, for real results, the model should be retrained, since the test dataset originates from the same data as the and validation, however, this serves as a proof of functional PPL evaluation code.*
+
 
 ### 📈 Training Visualizations
 ![Loss and Perplexity Subplots](assets/training_plots.png)
