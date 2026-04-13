@@ -78,7 +78,7 @@ Test Loss: 1.4644
 Test Perplexity: 4.3248
 ========================================
 ```
-*Note, for real results, the model should be retrained, since the test dataset originates from the same data as the and validation, however, this serves as a proof of functional PPL evaluation code.*
+*Note, for real results, the model should be retrained, since the test dataset originates from the same data as the test and validation, however, this serves as a proof of functional PPL evaluation code.*
 
 
 ### 📈 Training Visualizations
