@@ -14,7 +14,7 @@ from model import GPT, GPTConfig
 # defaults (can be overridden via configurator.py or CLI, e.g. --device=cpu)
 ckpt_path = os.path.join("out-shakespeare-char", "ckpt.pt")
 split = "test"  # 'train', 'val', or 'test'
-eval_iters = 200
+eval_iters = 100
 batch_size = 64
 seed = 1337
 device = "cuda"  # 'cpu', 'cuda', 'cuda:0', ...
@@ -51,6 +51,8 @@ for k in list(state_dict.keys()):
 model.load_state_dict(state_dict)
 model.eval()
 model.to(device)
+
+
 if compile:
     model = torch.compile(model)
 

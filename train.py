@@ -340,11 +340,11 @@ if ddp:
 
 
 # --- FINAL TEST ---
-print("\n" + "="*30)
-print("TRAINING COMPLETE - RUNNING FINAL TEST")
-final_metrics = estimate_loss()
-test_ppl = math.exp(final_metrics['test'])
+# print("\n" + "="*30)
+# print("TRAINING COMPLETE - RUNNING FINAL TEST")
+# final_metrics = estimate_loss()
+# test_ppl = math.exp(final_metrics['test'])
 
-print(f"Final Test Loss: {final_metrics['test']:.4f}")
-print(f"Final Test Perplexity: {test_ppl:.4f}")
-print("="*30)
+# print(f"Final Test Loss: {final_metrics['test']:.4f}")
+# print(f"Final Test Perplexity: {test_ppl:.4f}")
+# print("="*30)
