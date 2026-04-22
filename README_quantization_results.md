@@ -1,3 +1,23 @@
+## Latest Update: GPTQ By-Line (Threshold Search + Dynamic Scale) (`GPTQ_implementation_by_line.py`)
+
+This is the current best result in this repo.
+
+### Method
+
+- Quantization is done column-by-column with GPTQ-style Hessian compensation.
+- `threshold_multiplier` is found by grid search.
+- Scale is **not** grid-searched. It is computed from remaining relevant weights:
+  - relevant weights are those where `abs(weight) > threshold` (per row)
+  - scale = mean absolute value of relevant weights
+  - fallback = row mean absolute value if no relevant weights remain
+
+### Best Result
+
+- `Best Found -> T: 0.915 (MSE: 0.064732)`
+- `Best mse: 0.06473217904567719`
+
+---
+
 ## GPTQ By-Line + 2D Grid Search (`GPTQ_implementation_by_line_gridsearch.py`)
 
 This script implements a GPTQ-style quantization experiment for one attention projection layer, using:
