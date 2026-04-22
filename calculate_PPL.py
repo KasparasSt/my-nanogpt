@@ -12,7 +12,7 @@ from model import GPT, GPTConfig
 
 # -----------------------------------------------------------------------------
 # defaults (can be overridden via configurator.py or CLI, e.g. --device=cpu)
-ckpt_path = os.path.join("out-shakespeare-char", "ckpt.pt")
+ckpt_path = os.path.join("out-shakespeare-char", "ckpt_GPTQ.pt")
 split = "test"  # 'train', 'val', or 'test'
 eval_iters = 100
 batch_size = 64

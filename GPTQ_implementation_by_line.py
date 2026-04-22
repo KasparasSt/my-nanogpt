@@ -243,6 +243,22 @@ if __name__ == "__main__":
         print(f"Weights shape: {best_W_q.shape}")
         print(f"Weights unique sum: {best_W_q.unique().sum().item()}")
 
+        # -----------------------------
+        # Save a new checkpoint file:
+        # Replacing only the modified layer
+        target_layer = model.transformer.h[LAYER_INDEX].attn.c_attn
+        target_layer.weight.data.copy_(best_W_q.to(target_layer.weight.dtype))
+
+        # Build a new checkpoint object and store the updated model weights
+        ckpt_gptq = dict(checkpoint)
+        ckpt_gptq["model"] = model.state_dict()
+
+        # Save next to original checkpoint as ckpt_GPTQ.pt
+        ckpt_dir = os.path.dirname(CKPT_PATH)
+        ckpt_gptq_path = os.path.join(ckpt_dir, "ckpt_GPTQ.pt")
+        torch.save(ckpt_gptq, ckpt_gptq_path)
+        print(f"Saved quantized checkpoint to: {ckpt_gptq_path}")
+
     # import matplotlib.pyplot as plt
     # plt.imshow(best_W_q.cpu().numpy())
     # plt.show()

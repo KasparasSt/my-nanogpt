@@ -1,6 +1,6 @@
 ## Latest Update: GPTQ By-Line (Threshold Search + Dynamic Scale) (`GPTQ_implementation_by_line.py`)
 
-This is the current best result in this repo.
+This is the current best result in this repo. Also placed new weights into a new checkpoint `ckpt_GPTQ.pt` and evaluated perplexity with one modified layer.
 
 ### Method
 
@@ -15,6 +15,7 @@ This is the current best result in this repo.
 
 - `Best Found -> T: 0.915 (MSE: 0.064732)`
 - `Best mse: 0.06473217904567719`
+- `Quantized Test PPL: 6.0187 (Non-quantized = 6.0011)` -- almost no increase in perplexity
 
 ---
 
