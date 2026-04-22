@@ -1,3 +1,37 @@
+# GPTQ Prototype Script (`GPTQ_implementation.py`)
+
+This script is a **layer-wise GPTQ-style ternary quantization prototype** for nanoGPT.
+
+## What it does
+
+1. Loads a trained checkpoint (`ckpt.pt`).
+2. Builds a calibration token batch from `test.bin`.
+3. Captures activations from `transformer.h[layer_index].attn.c_attn` using a forward hook.
+4. Computes:
+   - reference output `Y_ref = X @ W^T`
+   - Hessian approximation `H = X^T @ X`
+   - inverse Hessian `H_inv`
+5. Runs threshold grid search and Hessian-aware ternary quantization.
+6. Reports best threshold + MSE and visualizes quantized weights.
+
+### Main settings (edit in `__main__`)
+
+- `DEVICE` (`"cpu"` or `"cuda"`)
+- `CKPT_PATH` (path to checkpoint)
+- `LAYER_INDEX` (transformer block index)
+- `DATA_DIR` (folder containing `test.bin`)
+- `BLOCK_SIZE`
+- `BATCH_SIZE`
+- `SEED`
+
+### Run
+
+```bash
+python GPTQ_implementation.py
+```
+
+
+
 # Ternary Quantization of Embedding Layers
 
 'KS code / quantizing_the_model_input_output.py'
