@@ -48,7 +48,7 @@ def get_activations(model, x_tokens, layer_index=0):
 
     # catching the data
     def hook(module, input, output):
-        activations.append(input[layer_index].detach())
+        activations.append(input[0].detach())
 
     # attaching the hook to the target layers
     handle = model.transformer.h[layer_index].attn.c_attn.register_forward_hook(hook)
