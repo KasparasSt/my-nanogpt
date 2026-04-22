@@ -1,3 +1,62 @@
+## GPTQ By-Line + 2D Grid Search (`GPTQ_implementation_by_line_gridsearch.py`)
+
+This script implements a GPTQ-style quantization experiment for one attention projection layer, using:
+- column-by-column error compensation with inverse Hessian
+- per-row ternary thresholds/scales
+- 2D grid search over `(threshold_multiplier, scale_multiplier)`
+
+### What it does
+
+1. Loads nanoGPT checkpoint (`ckpt.pt`) and restores model weights.
+2. Creates a calibration token batch from `test.bin`.
+3. Captures activations from `transformer.h[layer_index].attn.c_attn` using a forward hook.
+4. Builds reference outputs:
+   - `X_flat = X_big.view(-1, 384)`
+   - `Y_ref = X_flat @ W_orig.T`
+5. Computes Hessian approximation:
+   - `H = X_flat.T @ X_flat`
+   - adds damping `eps = 0.01 * mean(diag(H))`
+   - computes `H_inv = inverse(H)`
+6. Runs quantization + 2D search:
+   - `threshold_multiplier` in `np.linspace(0.05, 1.1, 35)`
+   - `scale_multiplier` in `np.linspace(0.05, 1.1, 35)`
+   - total combinations: `35 x 35 = 1225`
+7. Selects the best quantized weight matrix by minimum output MSE.
+
+
+
+### Quantization method (per-row)
+
+For each output row:
+- `row_mean = mean(abs(W[row]))`
+- `threshold[row] = row_mean * threshold_multiplier`
+- `scale[row] = row_mean * scale_multiplier`
+- ternary quantization values are `{ -scale[row], 0, +scale[row] }`
+
+Quantization is applied column-by-column, and each column’s quantization error is propagated to future columns using GPTQ-style Hessian inverse compensation.
+
+### Main config in `__main__`
+
+- `DEVICE`
+- `CKPT_PATH`
+- `LAYER_INDEX`
+- `DATA_DIR`
+- `BLOCK_SIZE`
+- `BATCH_SIZE`
+- `SEED`
+
+### Run
+
+
+```python GPTQ_implementation_by_line_gridsearch.py```
+
+
+### Result
+
+By running the gridsearch, mse of 0.19 was obtained. The threshold of 0.3 and scaling of 1.1 was found to perform the best. However, the results are worse, compared to previously done layer-wise quantizatiom (mse 0.11) where the thresholds were searched and scaling coefficients were just based on the average on remaining weights.
+
+
+
 # GPTQ Prototype Script (`GPTQ_implementation.py`)
 
 This script is a **layer-wise GPTQ-style ternary quantization prototype** for nanoGPT.
@@ -11,7 +70,7 @@ This script is a **layer-wise GPTQ-style ternary quantization prototype** for na
    - reference output `Y_ref = X @ W^T`
    - Hessian approximation `H = X^T @ X`
    - inverse Hessian `H_inv`
-5. Runs threshold grid search and Hessian-aware ternary quantization.
+5. Runs threshold search and Hessian-aware ternary quantization.
 6. Reports best threshold + MSE and visualizes quantized weights.
 
 ### Main settings (edit in `__main__`)
