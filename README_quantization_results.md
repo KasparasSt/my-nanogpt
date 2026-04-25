@@ -1,3 +1,34 @@
+## Latest Update: Full-Model GPTQ By-Line (`GPTQ_implementation_by_line_full_model.py`)
+
+In this version, I quantize hidden layers one by one across the full transformer (excluding input/output layers). The test data was split into two (first 50% was used for PPL evaluation and was untouched for GPTQ quantization, the other 50% (`GPTQ_data.bin`) was used for sampling random token sequences for GPTQ quantization (callibration data))
+
+Aditionally, `validate_quantization.py` was quickly generated using Codex for a sanity check, that the model is actually quantized.
+
+### How it works 
+
+- Build one calibration batch from `GOTQ_data.bin` (128 sequences, 256 tokens each).
+- Create a target list for every block (these are the main weight matrices):
+  - `attn.c_attn`
+  - `attn.c_proj`
+  - `mlp.c_fc`
+  - `mlp.c_proj`
+- For each target layer:
+  - capture that layer input activations with a forward hook
+  - compute Hessian from activations
+  - run threshold search
+  - quantize weights with ternary values `-s, 0, +s` (row-wise dynamic scale)
+  - write quantized weights back to the model
+- After all target layers are done, save final checkpoint as `ckpt_GPTQ_all.pt`.
+
+### Result
+
+- Unquantized PPL: `5.9813`
+- Quantized PPL: `6.0171`
+
+Perplexity changed only slightly after quantizing all hidden layers.
+
+---
+
 ## Latest Update: GPTQ By-Line (Threshold Search + Dynamic Scale) (`GPTQ_implementation_by_line.py`)
 
 This is the current best result in this repo. Also placed new weights into a new checkpoint `ckpt_GPTQ.pt` and evaluated perplexity with one modified layer.

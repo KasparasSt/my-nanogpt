@@ -72,7 +72,7 @@ def main() -> None:
 
     new_ckpt_path = CKPT_PATH.replace("ckpt.pt", "ckpt_quantized_3.pt")
     torch.save(ckpt, new_ckpt_path)
-    print(f"\n✅ Quantized checkpoint saved to: {new_ckpt_path}")
+    print(f"\nQuantized checkpoint saved to: {new_ckpt_path}")
 
 
 
