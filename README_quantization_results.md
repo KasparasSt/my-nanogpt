@@ -1,3 +1,24 @@
+## Quantization Comparison Table (Full-Model Hidden Linear Layers)
+
+All runs below are for the iterative full-model setup (24 hidden linear layers: `6 blocks x 4 layers`), excluding input/output layers.
+
+Added a new quantization rule where scale is based on each row’s max absolute value (row_absmax) and a global scale_multiplier.
+Then each weight is quantized by `round(w / s)` and clamped to the target integer range `(-7..,0,..7)`, and now we are searching for the best scale_multiplier instead of thresholds like previously.
+
+| Method | Type | Bit-width | Notes | Test Perplexity |
+| :--- | :--- | :--- | :--- | :--- |
+| Baseline (Unquantized) | Float | 16/32 | Reference model | **5.9813** |
+| GPTQ Ternary (Optimized) | Symmetric | 2-bit style (`-s, 0, +s`) | Threshold search + dynamic per-row scale | **6.0171** |
+| GPTQ 4-bit (`-7..7`) | Strict symmetric | 4-bit | Uniform signed levels | 5.9661 |
+| GPTQ 4-bit (`-8..7`) | Signed int4 | 4-bit | Two's-complement-style range | 5.9799 |
+| GPTQ 3-bit (`-3..3`) | Strict symmetric | 3-bit | Uniform signed levels | 5.9974 |
+| GPTQ 3-bit (`-4..3`) | Signed int3 | 3-bit | Two's-complement-style range | 5.9785 |
+| GPTQ 2-bit (`-1,0,1`) | Strict symmetric | 2-bit | Ternary-style, no optimized threshold | 6.0143 |
+| GPTQ 2-bit (`-2,1`) | Offset mapping | 2-bit | Non-zero-centered code range | 6.0143 |
+| GPTQ 1-bit (`0,1`)| Binary | 1-bit | Sign-based quantization | 13.5651|
+
+---
+
 ## Latest Update: Full-Model GPTQ By-Line (`GPTQ_implementation_by_line_full_model.py`)
 
 In this version, I quantize hidden layers one by one across the full transformer (excluding input/output layers). The test data was split into two (first 50% was used for PPL evaluation and was untouched for GPTQ quantization, the other 50% (`GPTQ_data.bin`) was used for sampling random token sequences for GPTQ quantization (callibration data))
