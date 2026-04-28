@@ -97,7 +97,7 @@ def get_target_layer(model, block_index, layer_name):
     raise ValueError(f"Unknown layer name: {layer_name}")
 
 
-def quantize_with_hessian_per_row(W, H_inv, scale_multiplier=1.0):
+def quantize_with_hessian_per_row(W, H_inv, scale_multiplier=1.0, num_values = 16):
     """
     Symmetric int4 quantization with GPTQ-style compensation.
     W: [n_out, n_in]
@@ -114,11 +114,19 @@ def quantize_with_hessian_per_row(W, H_inv, scale_multiplier=1.0):
 
         # Scale int from -7 to 7 (15 numbers, not 16 to maintain symmetry around 0)
         # Using current working matrix (
-        row_absmax = W_quant.abs().amax(dim=1).clamp_min(1e-8)
-        s_vec = (row_absmax / 1) * scale_multiplier  # one scale per row
+        row_absmax = W_quant.abs().amax(dim=1).clamp_min(1e-8) #clamp to avoid div by 0
+        s_vec = (row_absmax / int(num_values/2)) * scale_multiplier  # one scale per row
+
+        if num_values%2 != 0:
+            n_end = int(num_values / 2) 
+            n_start = -n_end 
+
+        elif num_values%2 == 0:
+            n_end = int(num_values / 2) -1
+            n_start = -n_end -1
 
         # Quantize to int4 integers and dequantize back to float
-        q_int = torch.round(w_col / s_vec).clamp(0, 1)
+        q_int = torch.round(w_col / s_vec).clamp(n_start, n_end) #16 values
         w_q = q_int * s_vec
 
         # Error and GPTQ compensation
