@@ -1,3 +1,32 @@
+## Update: FP4 little float quantization (`GPTQ_implementation_by_line_full_model_4bit_littl_float.py`)
+
+Using nearest-codebook quantization (with per-row scaling), tested with these three tensors:
+
+```python
+fp4_e3m0 = torch.tensor([
+    -16.0, -8.0, -4.0, -2.0, -1.0, -0.5, -0.25, 0.0,
+     0.25,  0.5,  1.0,  2.0,  4.0,  8.0, 16.0
+], dtype=torch.float32)
+
+fp4_e2m1 = torch.tensor([
+    -6.0, -4.0, -3.0, -2.0, -1.5, -1.0, -0.5, 0.0,
+     0.5,  1.0,  1.5,  2.0,  3.0,  4.0,  6.0
+], dtype=torch.float32)
+
+fp4_e1m2 = torch.tensor([
+    -3.5, -3.0, -2.5, -2.0, -1.5, -1.0, -0.5, 0.0,
+     0.5,  1.0,  1.5,  2.0,  2.5,  3.0,  3.5
+], dtype=torch.float32)
+```
+
+PPL was evaluated for each:
+- `Unquantized PPL: 5.9813    `
+- `FP4 E3M0 PPL: 5.9967`
+- `FP4 E2M1 PPL: 5.9814`
+- `FP4 E1M2 PPL: 5.9643`
+
+---
+
 ## Quantization Comparison Table (Full-Model Hidden Linear Layers)
 
 All runs below are for the iterative full-model setup (24 hidden linear layers: `6 blocks x 4 layers`), excluding input/output layers.
@@ -15,6 +44,8 @@ Then each weight is quantized by `round(w / s)` and clamped to the target intege
 | GPTQ 1-bit (`0,1`)| Binary | 1-bit | either 0 or 1 | 13.5651|
 
 ---
+
+
 
 ## Latest Update: Full-Model GPTQ By-Line (`GPTQ_implementation_by_line_full_model.py`)
 
