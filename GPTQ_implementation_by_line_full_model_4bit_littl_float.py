@@ -97,7 +97,7 @@ def get_target_layer(model, block_index, layer_name):
     raise ValueError(f"Unknown layer name: {layer_name}")
 
 
-def quantize_with_hessian_per_row(W, H_inv, scale_multiplier=1.0, which_list=3):
+def quantize_with_hessian_per_row(W, H_inv, scale_multiplier=1.0, which_list=4):
     """
     Symmetric int4 quantization with GPTQ-style compensation.
     W: [n_out, n_in]
@@ -106,21 +106,28 @@ def quantize_with_hessian_per_row(W, H_inv, scale_multiplier=1.0, which_list=3):
     W_quant = W.clone().float()
     n_out, n_in = W.shape
 
-    if which_list == 1:
+    if which_list == 1: #fp4_e3m0
         quant_list = W_quant.new_tensor([
             -16.0, -8.0, -4.0, -2.0, -1.0, -0.5, -0.25, 0.0,
             0.25,  0.5,  1.0,  2.0,  4.0,  8.0, 16.0
         ])
-    elif which_list == 2:
+    elif which_list == 2: #fp4_e2m1
         quant_list = W_quant.new_tensor([
         -6.0, -4.0, -3.0, -2.0, -1.5, -1.0, -0.5, 0.0,
         0.5,  1.0,  1.5,  2.0,  3.0,  4.0,  6.0
         ])
-    elif which_list == 3:
+    elif which_list == 3: #fp4_e1m2
         quant_list = W_quant.new_tensor([
         -3.5, -3.0, -2.5, -2.0, -1.5, -1.0, -0.5, 0.0,
         0.5,  1.0,  1.5,  2.0,  2.5,  3.0,  3.5
         ])
+    elif which_list == 4: #fp4_nf4 
+        quant_list = W_quant.new_tensor([-1.0, -0.6961928009986877, -0.5250730514526367, -0.39491748809814453, -0.28444138169288635,
+                            -0.18477343022823334, -0.09105003625154495, 0.0, 0.07958029955625534, 0.16093020141124725,
+                            0.24611230194568634, 0.33791524171829224, 0.44070982933044434,
+                            0.5626170039176941, 0.7229568362236023, 1.0
+                            ])
+
     else:
         print("ERROR ERORR, select quant_list")
 
@@ -190,11 +197,11 @@ def find_optimal_scale(W, H_inv, X_flat, Y_ref):
 if __name__ == "__main__":
     # Model
     DEVICE = "cuda"  # Or 'cpu' if you do not have a GPU
-    CKPT_PATH = "nanogpt/out-shakespeare-char/ckpt.pt"
+    CKPT_PATH = "out-shakespeare-char/ckpt.pt"
     LAYER_TYPES = ("attn.c_attn", "attn.c_proj", "mlp.c_fc", "mlp.c_proj")
 
     # Tokenization
-    DATA_DIR = r"nanogpt/data/shakespeare_char"
+    DATA_DIR = r"data/shakespeare_char"
     BLOCK_SIZE = 256
     BATCH_SIZE = 128
     SEED = 555
@@ -283,7 +290,7 @@ if __name__ == "__main__":
     ckpt_gptq = dict(checkpoint)
     ckpt_gptq["model"] = model.state_dict()
     ckpt_dir = os.path.dirname(CKPT_PATH)
-    ckpt_gptq_path = os.path.join(ckpt_dir, "ckpt_GPTQ_all_fp4_e1m2.pt")
+    ckpt_gptq_path = os.path.join(ckpt_dir, "ckpt_GPTQ_all_fp4_nf4.pt")
     torch.save(ckpt_gptq, ckpt_gptq_path)
     print(f"\nSaved quantized checkpoint to: {ckpt_gptq_path}")
 

@@ -1,4 +1,63 @@
-## Update: FP4 little float quantization (`GPTQ_implementation_by_line_full_model_4bit_littl_float.py`)
+## Update PPL evaluation to have a sliding window
+
+PPL Evalutation params:
+
+```Python
+eval_iters = 100
+batch_size = 64
+stride = 128 
+full_split = True 
+seed = 1337
+```
+
+
+PPL was evaluated for each:
+- `Unquantized PPL: 5.8894    `
+- `FP4 E3M0 PPL: 5.8586` <-- best, slightly better than unquantized
+- `FP4 E2M1 PPL: 5.8916`
+- `FP4 E1M2 PPL: 5.8888`
+- `FP4 NF4  PPL: 5.9026` <-- worst
+
+---
+
+## Four different little float quantizations
+
+Model was trained again for 2000 iterations, now 4 different quantization tensors were used:
+
+```python
+fp4_e3m0 = torch.tensor([
+    -16.0, -8.0, -4.0, -2.0, -1.0, -0.5, -0.25, 0.0,
+     0.25,  0.5,  1.0,  2.0,  4.0,  8.0, 16.0
+], dtype=torch.float32)
+
+fp4_e2m1 = torch.tensor([
+    -6.0, -4.0, -3.0, -2.0, -1.5, -1.0, -0.5, 0.0,
+     0.5,  1.0,  1.5,  2.0,  3.0,  4.0,  6.0
+], dtype=torch.float32)
+
+fp4_e1m2 = torch.tensor([
+    -3.5, -3.0, -2.5, -2.0, -1.5, -1.0, -0.5, 0.0,
+     0.5,  1.0,  1.5,  2.0,  2.5,  3.0,  3.5
+], dtype=torch.float32)
+
+fp4_nf4 = W_quant.new_tensor([
+                  -1.0, -0.6961928009986877, -0.5250730514526367, -0.39491748809814453, -0.28444138169288635,
+                     -0.18477343022823334, -0.09105003625154495, 0.0, 0.07958029955625534, 0.16093020141124725, 
+                     0.24611230194568634, 0.33791524171829224, 0.44070982933044434, 0.5626170039176941, 0.7229568362236023, 1.0
+                     ], dtype=torch.float32)
+```
+
+PPL was evaluated for each:
+- `Unquantized PPL: 5.8705    `
+- `FP4 E3M0 PPL: 5.8391` <-- best
+- `FP4 E2M1 PPL: 5.8739`
+- `FP4 E1M2 PPL: 5.8698`
+- `FP4 NF4  PPL: 5.8840` <-- worst
+
+---
+
+
+## FP4 little float quantization (`GPTQ_implementation_by_line_full_model_4bit_littl_float.py`)
 
 Using nearest-codebook quantization (with per-row scaling), tested with these three tensors:
 
