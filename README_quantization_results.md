@@ -1,4 +1,4 @@
-## Update PPL evaluation to have a sliding window
+## Update: deterministic PPL evaluation with a sliding window
 
 PPL Evalutation params:
 
