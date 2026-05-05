@@ -3,8 +3,8 @@
 
 Scripts:
 
-- [M3_single_layer_eval.py](/C:/Users/kaspa/projects/nanogpt/M3_single_layer_eval.py)
-- [M3_multi_layer_eval.py](/C:/Users/kaspa/projects/nanogpt/M3_multi_layer_eval.py)
+- [M3_single_layer_eval.py](./M3_single_layer_eval.py)
+- [M3_multi_layer_eval.py](./M3_multi_layer_eval.py)
 
 ## Table
 
