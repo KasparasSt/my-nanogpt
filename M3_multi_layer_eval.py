@@ -73,10 +73,95 @@ COMPILE = False
 # - only attention in block 0:
 #   "transformer.h.0.attn.c_attn",
 #   "transformer.h.0.attn.c_proj",
+
+# All layers
+'''
+"transformer.h.0.attn.c_attn"
+"transformer.h.0.attn.c_proj"
+"transformer.h.0.mlp.c_fc"
+"transformer.h.0.mlp.c_proj"
+"transformer.h.1.attn.c_attn"
+"transformer.h.1.attn.c_proj"
+"transformer.h.1.mlp.c_fc"
+"transformer.h.1.mlp.c_proj"
+"transformer.h.2.attn.c_attn"
+"transformer.h.2.attn.c_proj"
+"transformer.h.2.mlp.c_fc"
+"transformer.h.2.mlp.c_proj"
+"transformer.h.3.attn.c_attn"
+"transformer.h.3.attn.c_proj"
+"transformer.h.3.mlp.c_fc"
+"transformer.h.3.mlp.c_proj"
+"transformer.h.4.attn.c_attn"
+"transformer.h.4.attn.c_proj"
+"transformer.h.4.mlp.c_fc"
+"transformer.h.4.mlp.c_proj"
+"transformer.h.5.attn.c_attn"
+"transformer.h.5.attn.c_proj"
+"transformer.h.5.mlp.c_fc"
+"transformer.h.5.mlp.c_proj"
+'''
+#ALL
 TARGET_LAYER_PATHS = [
     "transformer.h.0.attn.c_attn",
     "transformer.h.0.attn.c_proj",
+    "transformer.h.0.mlp.c_fc",
+    "transformer.h.0.mlp.c_proj",
+    "transformer.h.1.attn.c_attn",
+    "transformer.h.1.attn.c_proj",
+    "transformer.h.1.mlp.c_fc",
+    "transformer.h.1.mlp.c_proj",
+    "transformer.h.2.attn.c_attn",
+    "transformer.h.2.attn.c_proj",
+    "transformer.h.2.mlp.c_fc",
+    "transformer.h.2.mlp.c_proj",
+    "transformer.h.3.attn.c_attn",
+    "transformer.h.3.attn.c_proj",
+    "transformer.h.3.mlp.c_fc",
+    "transformer.h.3.mlp.c_proj",
+    "transformer.h.4.attn.c_attn",
+    "transformer.h.4.attn.c_proj",
+    "transformer.h.4.mlp.c_fc",
+    "transformer.h.4.mlp.c_proj",
+    "transformer.h.5.attn.c_attn",
+    "transformer.h.5.attn.c_proj",
+    "transformer.h.5.mlp.c_fc",
+    "transformer.h.5.mlp.c_proj",
 ]
+
+# #MLP
+# TARGET_LAYER_PATHS = [
+#     "transformer.h.0.mlp.c_fc",
+#     "transformer.h.0.mlp.c_proj",
+#     "transformer.h.1.mlp.c_fc",
+#     "transformer.h.1.mlp.c_proj",
+#     "transformer.h.2.mlp.c_fc",
+#     "transformer.h.2.mlp.c_proj",
+#     "transformer.h.3.mlp.c_fc",
+#     "transformer.h.3.mlp.c_proj",
+#     "transformer.h.4.mlp.c_fc",
+#     "transformer.h.4.mlp.c_proj",
+#     "transformer.h.5.mlp.c_fc",
+#     "transformer.h.5.mlp.c_proj",
+# ]
+
+#Only attention
+# TARGET_LAYER_PATHS = [
+#     "transformer.h.0.attn.c_attn",
+#     "transformer.h.0.attn.c_proj",
+#     "transformer.h.1.attn.c_attn",
+#     "transformer.h.1.attn.c_proj",
+#     "transformer.h.2.attn.c_attn",
+#     "transformer.h.2.attn.c_proj",
+#     "transformer.h.3.attn.c_attn",
+#     "transformer.h.3.attn.c_proj",
+#     "transformer.h.4.attn.c_attn",
+#     "transformer.h.4.attn.c_proj",
+#     "transformer.h.5.attn.c_attn",
+#     "transformer.h.5.attn.c_proj",
+# ]
+
+
 
 # One shared k for all selected layers.
 #
@@ -84,6 +169,47 @@ TARGET_LAYER_PATHS = [
 # If later you want different k per layer, that can be added, but this version
 # keeps one global setting for easier interpretation.
 M3_K = 512
+
+# Optional per-layer override for k.
+#
+# If a layer path is present here, that value is used instead of the global M3_K.
+# This is the smallest code change that lets you try, for example:
+# - attention layers at k = 4096
+# - MLP layers at k = 8192
+#
+# Example:
+# M3_K_BY_LAYER = {
+#     "transformer.h.0.attn.c_attn": 4096,
+#     "transformer.h.0.attn.c_proj": 4096,
+#     "transformer.h.0.mlp.c_fc": 8192,
+#     "transformer.h.0.mlp.c_proj": 8192,
+# }
+M3_K_BY_LAYER = {
+    "transformer.h.0.attn.c_attn":4096,
+    "transformer.h.0.attn.c_proj":4096,
+    "transformer.h.0.mlp.c_fc":8192,
+    "transformer.h.0.mlp.c_proj":8192,
+    "transformer.h.1.attn.c_attn":4096,
+    "transformer.h.1.attn.c_proj":4096,
+    "transformer.h.1.mlp.c_fc":8192,
+    "transformer.h.1.mlp.c_proj":8192,
+    "transformer.h.2.attn.c_attn":4096,
+    "transformer.h.2.attn.c_proj":4096,
+    "transformer.h.2.mlp.c_fc":8192,
+    "transformer.h.2.mlp.c_proj":8192,
+    "transformer.h.3.attn.c_attn":4096,
+    "transformer.h.3.attn.c_proj":4096,
+    "transformer.h.3.mlp.c_fc":8192,
+    "transformer.h.3.mlp.c_proj":8192,
+    "transformer.h.4.attn.c_attn":4096,
+    "transformer.h.4.attn.c_proj":4096,
+    "transformer.h.4.mlp.c_fc":8192,
+    "transformer.h.4.mlp.c_proj":8192,
+    "transformer.h.5.attn.c_attn":4096,
+    "transformer.h.5.attn.c_proj":4096,
+    "transformer.h.5.mlp.c_fc":8192,
+    "transformer.h.5.mlp.c_proj":8192,
+}
 
 RUN_LOGITS_MSE_CHECK = True
 
@@ -373,8 +499,9 @@ def patch_selected_layers(layer_tuples, k):
     - list of (layer_path, layer_module)
     """
     for index, (layer_path, layer) in enumerate(layer_tuples):
-        patch_linear_layer_with_m3(layer, k=k, seed_offset=index)
-        print(f"Patched with M3: {layer_path} (k={k})")
+        layer_k = M3_K_BY_LAYER.get(layer_path, k)
+        patch_linear_layer_with_m3(layer, k=layer_k, seed_offset=index)
+        print(f"Patched with M3: {layer_path} (k={layer_k})")
 
 
 # -----------------------------------------------------------------------------
