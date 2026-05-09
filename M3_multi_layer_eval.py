@@ -102,32 +102,32 @@ COMPILE = False
 "transformer.h.5.mlp.c_proj"
 '''
 #ALL
-TARGET_LAYER_PATHS = [
-    "transformer.h.0.attn.c_attn",
-    "transformer.h.0.attn.c_proj",
-    "transformer.h.0.mlp.c_fc",
-    "transformer.h.0.mlp.c_proj",
-    "transformer.h.1.attn.c_attn",
-    "transformer.h.1.attn.c_proj",
-    "transformer.h.1.mlp.c_fc",
-    "transformer.h.1.mlp.c_proj",
-    "transformer.h.2.attn.c_attn",
-    "transformer.h.2.attn.c_proj",
-    "transformer.h.2.mlp.c_fc",
-    "transformer.h.2.mlp.c_proj",
-    "transformer.h.3.attn.c_attn",
-    "transformer.h.3.attn.c_proj",
-    "transformer.h.3.mlp.c_fc",
-    "transformer.h.3.mlp.c_proj",
-    "transformer.h.4.attn.c_attn",
-    "transformer.h.4.attn.c_proj",
-    "transformer.h.4.mlp.c_fc",
-    "transformer.h.4.mlp.c_proj",
-    "transformer.h.5.attn.c_attn",
-    "transformer.h.5.attn.c_proj",
-    "transformer.h.5.mlp.c_fc",
-    "transformer.h.5.mlp.c_proj",
-]
+# TARGET_LAYER_PATHS = [
+#     "transformer.h.0.attn.c_attn",
+#     "transformer.h.0.attn.c_proj",
+#     "transformer.h.0.mlp.c_fc",
+#     "transformer.h.0.mlp.c_proj",
+#     "transformer.h.1.attn.c_attn",
+#     "transformer.h.1.attn.c_proj",
+#     "transformer.h.1.mlp.c_fc",
+#     "transformer.h.1.mlp.c_proj",
+#     "transformer.h.2.attn.c_attn",
+#     "transformer.h.2.attn.c_proj",
+#     "transformer.h.2.mlp.c_fc",
+#     "transformer.h.2.mlp.c_proj",
+#     "transformer.h.3.attn.c_attn",
+#     "transformer.h.3.attn.c_proj",
+#     "transformer.h.3.mlp.c_fc",
+#     "transformer.h.3.mlp.c_proj",
+#     "transformer.h.4.attn.c_attn",
+#     "transformer.h.4.attn.c_proj",
+#     "transformer.h.4.mlp.c_fc",
+#     "transformer.h.4.mlp.c_proj",
+#     "transformer.h.5.attn.c_attn",
+#     "transformer.h.5.attn.c_proj",
+#     "transformer.h.5.mlp.c_fc",
+#     "transformer.h.5.mlp.c_proj",
+# ]
 
 # #MLP
 # TARGET_LAYER_PATHS = [
@@ -146,20 +146,20 @@ TARGET_LAYER_PATHS = [
 # ]
 
 #Only attention
-# TARGET_LAYER_PATHS = [
-#     "transformer.h.0.attn.c_attn",
-#     "transformer.h.0.attn.c_proj",
-#     "transformer.h.1.attn.c_attn",
-#     "transformer.h.1.attn.c_proj",
-#     "transformer.h.2.attn.c_attn",
-#     "transformer.h.2.attn.c_proj",
-#     "transformer.h.3.attn.c_attn",
-#     "transformer.h.3.attn.c_proj",
-#     "transformer.h.4.attn.c_attn",
-#     "transformer.h.4.attn.c_proj",
-#     "transformer.h.5.attn.c_attn",
-#     "transformer.h.5.attn.c_proj",
-# ]
+TARGET_LAYER_PATHS = [
+    "transformer.h.0.attn.c_attn",
+    "transformer.h.0.attn.c_proj",
+    "transformer.h.1.attn.c_attn",
+    "transformer.h.1.attn.c_proj",
+    "transformer.h.2.attn.c_attn",
+    "transformer.h.2.attn.c_proj",
+    "transformer.h.3.attn.c_attn",
+    "transformer.h.3.attn.c_proj",
+    "transformer.h.4.attn.c_attn",
+    "transformer.h.4.attn.c_proj",
+    "transformer.h.5.attn.c_attn",
+    "transformer.h.5.attn.c_proj",
+]
 
 
 
@@ -178,39 +178,33 @@ M3_K = 512
 # - MLP layers at k = 8192
 #
 # Example:
+M3_K_BY_LAYER = {}
 # M3_K_BY_LAYER = {
-#     "transformer.h.0.attn.c_attn": 4096,
-#     "transformer.h.0.attn.c_proj": 4096,
-#     "transformer.h.0.mlp.c_fc": 8192,
-#     "transformer.h.0.mlp.c_proj": 8192,
-# }
-M3_K_BY_LAYER = {
-    "transformer.h.0.attn.c_attn":4096,
-    "transformer.h.0.attn.c_proj":4096,
-    "transformer.h.0.mlp.c_fc":8192,
-    "transformer.h.0.mlp.c_proj":8192,
-    "transformer.h.1.attn.c_attn":4096,
-    "transformer.h.1.attn.c_proj":4096,
-    "transformer.h.1.mlp.c_fc":8192,
-    "transformer.h.1.mlp.c_proj":8192,
-    "transformer.h.2.attn.c_attn":4096,
-    "transformer.h.2.attn.c_proj":4096,
-    "transformer.h.2.mlp.c_fc":8192,
-    "transformer.h.2.mlp.c_proj":8192,
-    "transformer.h.3.attn.c_attn":4096,
-    "transformer.h.3.attn.c_proj":4096,
-    "transformer.h.3.mlp.c_fc":8192,
-    "transformer.h.3.mlp.c_proj":8192,
-    "transformer.h.4.attn.c_attn":4096,
-    "transformer.h.4.attn.c_proj":4096,
-    "transformer.h.4.mlp.c_fc":8192,
-    "transformer.h.4.mlp.c_proj":8192,
-    "transformer.h.5.attn.c_attn":4096,
-    "transformer.h.5.attn.c_proj":4096,
-    "transformer.h.5.mlp.c_fc":8192,
-    "transformer.h.5.mlp.c_proj":8192,
-}
-
+#     "transformer.h.0.attn.c_attn": 2048,
+#     "transformer.h.0.attn.c_proj": 2048,
+#     "transformer.h.0.mlp.c_fc": 2048,
+#     "transformer.h.0.mlp.c_proj": 2048,
+#     "transformer.h.1.attn.c_attn": 2048,
+#     "transformer.h.1.attn.c_proj": 2048,
+#     "transformer.h.1.mlp.c_fc": 2048,
+#     "transformer.h.1.mlp.c_proj": 2048,
+#     "transformer.h.2.attn.c_attn": 2048,
+#     "transformer.h.2.attn.c_proj": 2048,
+#     "transformer.h.2.mlp.c_fc": 2048,
+#     "transformer.h.2.mlp.c_proj": 2048,
+#     "transformer.h.3.attn.c_attn": 2048,
+#     "transformer.h.3.attn.c_proj": 2048,
+#     "transformer.h.3.mlp.c_fc": 2048,
+#     "transformer.h.3.mlp.c_proj": 2048,
+#     "transformer.h.4.attn.c_attn": 2048,
+#     "transformer.h.4.attn.c_proj": 2048,
+#     "transformer.h.4.mlp.c_fc": 2048,
+#     "transformer.h.4.mlp.c_proj": 4096,
+#     "transformer.h.5.attn.c_attn": 2048,
+#     "transformer.h.5.attn.c_proj": 2048,
+#     "transformer.h.5.mlp.c_fc": 8192,
+#     "transformer.h.5.mlp.c_proj": 8192,
+#   }
 RUN_LOGITS_MSE_CHECK = True
 
 exec(open("configurator.py").read())
