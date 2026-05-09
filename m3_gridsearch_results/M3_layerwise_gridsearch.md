@@ -36,3 +36,7 @@ Baseline PPL: **5.8894**
 | `transformer.h.5.attn.c_proj` | 5.8894 | 5.8759 | 5.9030 | 5.8876 | 5.8888 | 5.8862 | 5.8890 | 5.8899 |
 | `transformer.h.5.mlp.c_fc` | 5.8894 | 7.6571 | 6.6508 | 6.1148 | 5.9559 | 5.9763 | 5.9129 | 5.9202 |
 | `transformer.h.5.mlp.c_proj` | 5.8894 | 9.3573 | 7.0947 | 6.4102 | 6.1370 | 5.9580 | 5.8685 | 5.9086 |
+
+If we apply perplexity threshold of 5.950, we can observe the most and least stable layers.
+
+![Image](each_layer_ppl.png)

@@ -105,3 +105,37 @@ All attention layers approximated
 | 4096  | 5.889 | 6.022 | 1.022 |
 | 8192  | 5.889 | 5.926 | 1.006 |
 | 12288 (32*n*)  | 5.889 | 5.887 | 1.000 |
+
+**Conclusion:** MLP layers are a lot more sensitive to M3 simplification.
+
+
+## Custom combinations
+
+Attn layers: `k = 4096`, MLP layers: `k = 8192`. **PPL: 6.416**. Ratio: 1.090
+
+All layers approximated except mlp.c_proj
+
+According to [M3_layerwise_gridsearch](nanogpt\m3_gridsearch_results\M3_approximation.md), the least stable layers are  mlp.c_proj. So I will try to evaluate PPL while these layers are left unquantized.
+
+
+**Here we quantize all linear layers except for: `h.5.mlp_fc`**
+
+| k | Baseline PPL | Patched PPL | Ratio |
+|---:|---:|---:| ---: |
+| 512 | 5.889 | 65.775 | 11.168 |
+| 1024 | 5.889 | 15.679 | 2.662 |
+| 2048 | 5.889 | 7.087 | 1.203 |
+| 4096  | 5.889 | 6.118 | **1.039** |
+| 8192  | 5.889 | 5.933 | 1.007 |
+| 12288 (32*n*)  | 5.889 | 5.883 | 0.999 |
+
+We obtain PPL of 6.118 at `k = 4096`, for comparison for same k, if we leave all MLP layers intact we obtain PPL = 6.022. Here we simplify 6 more layers with decrease in PPL increasing around 0.1.
+
+
+We can further optimize the M3 approximation by leaving the h.5.mlp.c_fc layer intact as well, since it is one of the least stable ones for M3 approximation ([M3_layerwise_gridsearch](nanogpt\m3_gridsearch_results\M3_approximation.md)). 
+
+THe ppl changes noticeably: PPL 6.118 $\rightarrow$ 6.044 
+
+Recudcing most stable layer (attn.c_proj) k to 2048, makes the model even lighter without a large sacrifice on PPL.
+
+PPL 6.044 $\rightarrow$ 6.119
