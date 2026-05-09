@@ -111,8 +111,11 @@ All attention layers approximated
 
 ## Custom combinations
 
+### Larger k for MLP layers
 Attn layers: `k = 4096`, MLP layers: `k = 8192`. **PPL: 6.416**. Ratio: 1.090
 
+
+### Leaving some layers unsimplified
 All layers approximated except mlp.c_proj
 
 According to [M3_layerwise_gridsearch](nanogpt\m3_gridsearch_results\M3_approximation.md), the least stable layers are  mlp.c_proj. So I will try to evaluate PPL while these layers are left unquantized.
